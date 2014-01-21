@@ -1,0 +1,13 @@
+USAGE:
+
+python Main INPUT_FILE.txt GMAIL_USER_NAME
+	Where INPUT_FILE is an .emlx message file and 
+	GMAIL_USER_NAME is a user name from Gmail.
+	
+
+OPTIONS:
+
+python --help : Shows a list of help switches.
+python --output OUT_FILE.txt INPUT_FILE.txt GMAIL_USER_NAME :
+  				pastes all output to OUT_FILE.txt
+         
