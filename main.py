@@ -1,4 +1,5 @@
 from __future__ import print_function
+from email.parser import Parser
 import os
 import sys
 import re
@@ -6,9 +7,10 @@ import imaplib
 import getopt
 import pprint
 import getpass
-import ucb
+import ucb #to be removed later.  For testing purposes only.
 import email
-from email.parser import Parser
+import logging
+
 '''
 Main entry point.  Given a .emlx file, compares the message ID with the appropiate 
 message on GMAIL (using IMAP search).  Outputs the contents of the message if
@@ -23,7 +25,10 @@ Created on Jan 21, 2014
 USAGE = "Usage.txt"
 
 '''For testing purposes.'''
-IMAP2_FILE = "tests/input/dxMail2002c"
+IMAP2_TBIRD_FILE = "tests/input/dxMail2002c"
+
+'''For testing purposes.'''
+APPLE_MAIL_FILE = "tests/input/1410088.emlx"
 
 def parse_email_from_file(msg):
     """Parses the file MSG for email headers.  Returns a Parser object holding 
@@ -31,11 +36,12 @@ def parse_email_from_file(msg):
     headers = Parser().parse(open(msg, 'r'))
     return headers
 
-def get_message_id(parser):
-    """Given the Parser object PARSER, which holds email header information,
+def get_message_id(psr):
+    """Given the Parser object PSR, which holds email header information,
        returns the Message ID of the header."""
-    return parser['Message-Id']
-
+    return psr['Message-Id']
+msgID = []
+msgID.append(None)
 def main():
     """Main function.  Outputs directions and switches."""
     
@@ -52,7 +58,6 @@ def main():
     print("Here is a list of all mailboxes on IMAP2:")
     pprint.pprint(imap2.list())
     ucb.interact()
-    
     
 def usage():
     """Calls the Usage file."""
