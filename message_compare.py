@@ -13,7 +13,7 @@ import email
 import logging
 
 '''
-Main entry point.  Given a .emlx file, compares the message ID with the appropiate 
+Main entry point.  Given a path to the IMAP2 server, compares the message ID with the appropiate 
 message on GMAIL (using IMAP search).  Outputs the contents of the message if
 it is not on GMAIL.
 
