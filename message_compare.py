@@ -13,9 +13,9 @@ import email
 import logging
 
 '''
-Main entry point.  Given a .emlx file, compares the message ID with the appropiate 
-message on GMAIL (using IMAP search).  Outputs the contents of the message if
-it is not on GMAIL.
+Main entry point.  Given two paths to IMAP sources, compares the message IDs of 
+the two IMAP sources. Outputs the contents of the message iff it does not appear
+in both sources.
 
 Created on Jan 21, 2014
 
