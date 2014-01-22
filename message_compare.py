@@ -74,7 +74,7 @@ def main():
     compare_ids = Comparator.Comparator(gmail_msg_ids, IMAP2_msg_ids)
     diff_msgs = compare_ids.compare()
     
-    print("Here is a list of the different messages:\n")
+    print("Here is a list of the different message IDs:\n")
     pprint(diff_msgs)
     
     
