@@ -1,6 +1,6 @@
 from __future__ import print_function
 from email.parser import Parser
-from . import Comparator
+import Comparator
 import os
 import sys
 import re
@@ -13,7 +13,7 @@ import email
 import logging
 
 '''
-Main entry point.  Given a path to the IMAP2 server, compares the message ID with the appropiate 
+Main entry point.  Given a .emlx file, compares the message ID with the appropiate 
 message on GMAIL (using IMAP search).  Outputs the contents of the message if
 it is not on GMAIL.
 
@@ -57,7 +57,7 @@ def get_msg_ids(path, port, folder, usrname, passwrd):
     
  
 def main():
-    """Main function.  Outputs directions and switches."""
+    """Main function.  Prompts user for input."""
     
     gmail_usr_name = raw_input("Enter the gmail user name: \n")
     gmail_passwrd = getpass.getpass("Enter the Gmail password: \n")
