@@ -13,7 +13,7 @@ def test_get_msg_ids():
     
     print("Gathering all message id's for S_perlmutter")
     '''Message ID's from s_perlmutter@lbl.gov.'''
-    saul_gmail_msg_ids = message_compare.get_msg_ids("imap.gmail.com", 993, "[Gmail]/All Mail", "s_perlmutter@lbl.gov", "THEPASWORD")
+    saul_gmail_msg_ids = message_compare.get_msg_ids("imap.gmail.com", 993, "[Gmail]/All Mail", "nooptest2@lbl.gov", "THEPASWORD")
     
 def main():
     test_get_msg_ids()
