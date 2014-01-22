@@ -1,6 +1,7 @@
 from __future__ import print_function
 from email.parser import Parser
 import Comparator
+import Accumulator
 import os
 import sys
 import re
@@ -37,23 +38,13 @@ IMAP_PORT = 993;
 '''The path to IMAP2.'''
 IMAP2_PATH = "imap2.lbl.gov"
 
-def get_msg_ids(path, port, folder, usrname, passwrd):
-    """Returns a list of all message ID's from the mail server's 
-       folder, FOLDER associated with the PATH,using the log in credentials 
-       for the user name, USRNAME, and for the password, PASSWRD."""
-    msg_ids = []
+
+def show_by_id(msg_id, path, port, folder, usrname, passwrd):
+    """Shows the partial message associated with the message-ID, MSG-ID."""
     connection = imaplib.IMAP4_SSL(path, port)
     connection.login(usrname, passwrd)
     connection.select(folder)
-    response, data = connection.uid('FETCH', '1:*', '(RFC822.HEADER)')
-    messages = [data[i][1].strip() + "\r\nSize:" + data[i][0].split()[4]
-                + "\r\nUID:" + data[i][0].split()[2]
-                for i in xrange(0, len(data), 2)]
-    for msg in messages:
-        msg_str = email.message_from_string(msg)
-        message_id = msg_str.get('Message-ID')
-        msg_ids.append(message_id)
-    return msg_ids
+    resp, items = connection.search(None, 'HEADER', "Message-id", msg_id)
     
  
 def main():
@@ -62,22 +53,22 @@ def main():
     gmail_usr_name = raw_input("Enter the gmail user name: \n")
     gmail_passwrd = getpass.getpass("Enter the Gmail password: \n")
     print("Please wait while message IDs are populated...")
-    gmail_msg_ids = get_msg_ids(GMAIL_PATH, IMAP_PORT, "[Gmail]/All Mail", gmail_usr_name, 
-                                gmail_passwrd)
+    gmail_accumulator = Accumulator.Accumulator(GMAIL_PATH, gmail_usr_name, gmail_passwrd,
+                                                IMAP_PORT, "[Gmail]/All Mail")
+    gmail_msg_ids = gmail_accumulator.get_ids()
     pprint.pprint(gmail_msg_ids)
     IMAP2_usr_name = raw_input("Enter the IMAP2 user name: \n")
     IMAP2_passwrd = getpass.getpass("Enter the IMAP2 password: \n")
     print("Please wait while message IDs are populated")
-    IMAP2_msg_ids = get_msg_ids(IMAP2_PATH, IMAP_PORT, "[Gmail]/All Mail", IMAP2_usr_name, 
-                                IMAP2_passwrd)
+    IMAP2_accumulator = Accumulator.Accumulator(IMAP2_PATH, IMAP2_usr_name, IMAP2_passwrd,
+                                                IMAP_PORT, "[Gmail]/All Mail")
+    IMAP2_msg_ids = IMAP2_accumulator.get_ids()
     
     compare_ids = Comparator.Comparator(gmail_msg_ids, IMAP2_msg_ids)
     diff_msgs = compare_ids.compare()
     
     print("Here is a list of the different message IDs:\n")
     pprint(diff_msgs)
-    
-    
     
     
     ucb.interact()
