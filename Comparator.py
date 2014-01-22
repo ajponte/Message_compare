@@ -15,7 +15,7 @@ class Comparator():
         self.diff_messages = []
 
     def compare(self):
-        """Comapres the messages between IDS_LIST1 and IDS_LIST2 to
+        """Compares the messages between IDS_LIST1 and IDS_LIST2 to
            find all differences.  Returns a list of the differences."""
         for curr_id in self.ids1:
             if curr_id not in self.ids2:
