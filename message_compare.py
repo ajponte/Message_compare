@@ -1,5 +1,6 @@
 from __future__ import print_function
 from email.parser import Parser
+from . import Comparator
 import os
 import sys
 import re
@@ -54,16 +55,29 @@ def get_msg_ids(path, port, folder, usrname, passwrd):
         msg_ids.append(message_id)
     return msg_ids
     
-    
+ 
 def main():
     """Main function.  Outputs directions and switches."""
     
     gmail_usr_name = raw_input("Enter the gmail user name: \n")
     gmail_passwrd = getpass.getpass("Enter the Gmail password: \n")
     print("Please wait while message IDs are populated...")
-    gmail_msg_ids = get_msg_ids(GMAIL_PATH, IMAP_PORT, "Inbox", gmail_usr_name, 
+    gmail_msg_ids = get_msg_ids(GMAIL_PATH, IMAP_PORT, "[Gmail]/All Mail", gmail_usr_name, 
                                 gmail_passwrd)
     pprint.pprint(gmail_msg_ids)
+    IMAP2_usr_name = raw_input("Enter the IMAP2 user name: \n")
+    IMAP2_passwrd = getpass.getpass("Enter the IMAP2 password: \n")
+    print("Please wait while message IDs are populated")
+    IMAP2_msg_ids = get_msg_ids(IMAP2_PATH, IMAP_PORT, "[Gmail]/All Mail", IMAP2_usr_name, 
+                                IMAP2_passwrd)
+    
+    compare_ids = Comparator.Comparator(gmail_msg_ids, IMAP2_msg_ids)
+    diff_msgs = compare_ids.compare()
+    
+    print("Here is a list of the different messages:\n")
+    pprint(diff_msgs)
+    
+    
     
     
     ucb.interact()
