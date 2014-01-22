@@ -8,16 +8,16 @@ nooptest1_msg_ids = []
 nooptest2_msg_ids = []
 
 def test_get_msg_ids():
-    
+    # To run the test for real, replace "THEPASSWORD" witb the actual password.
     '''Message IDs from nooptest1.'''
     print("Gathering all message id's for nooptest1...")
     nooptest1_msg_ids = message_compare.get_msg_ids("imap.gmail.com", 993, "[Gmail]/All Mail", "nooptest1@lbl.gov", 
-                                "LottaSaulsMail")
+                                "THEPASSWORD")
     pprint.pprint(nooptest1_msg_ids)
     
     print("Gathering all message id's for nooptest2..")
     '''Message ID's from nooptest2...'''
-    nooptest2_msg_ids = message_compare.get_msg_ids("imap.gmail.com", 993, "[Gmail]/All Mail", "nooptest2@lbl.gov", "LottaSaulsMail")
+    nooptest2_msg_ids = message_compare.get_msg_ids("imap.gmail.com", 993, "[Gmail]/All Mail", "nooptest2@lbl.gov", "THEPASSWORD")
     pprint.pformat(nooptest2_msg_ids)
     
     return nooptest1_msg_ids, nooptest2_msg_ids
