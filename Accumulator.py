@@ -26,7 +26,8 @@ class Accumulator:
         self.headers_map = {}
         
     def get_ids(self):
-        """Returns a list of message-IDs from THIS server and folder."""
+        """Returns a list of message-IDs from THIS server and folder.
+           Adds the message-IDs to MSG_IDS and HEADERS_MAP."""
         connection = imaplib.IMAP4_SSL(self.server, self.port_num)
         connection.login(self.user_name, self.password)
         connection.select(self.folder)
@@ -38,10 +39,19 @@ class Accumulator:
             msg_str = email.message_from_string(msg)
             self.msg_strings.append(msg_str)
             message_id = msg_str.get('Message-ID')
+            to = msg_str.get("To");
+            frm = msg_str.get("From")
+            subj = msg_str.get("Subject")
+            self.add_to_headers_map(message_id, [to, frm, subj])
             self.msg_ids.append(message_id)
         self.msgs = messages
         return self.msg_ids
     
+    def add_to_headers_map(self, message_id, fields):
+        """Adds to the map of headers a MESSAGE-ID which is mapped to an 
+           array of header FIELDS [TO, FROM, SUBJECT]."""
+        self.headers_map[message_id] = fields
+        
     def count_ids(self):
         """Returns the number of message-IDs in THIS."""
         self.count = len(self.msg_ids)
