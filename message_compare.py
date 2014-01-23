@@ -37,39 +37,50 @@ IMAP_PORT = 993;
 
 '''The path to IMAP2.'''
 IMAP2_PATH = "imap2.lbl.gov"
-
-
-def show_by_id(msg_id, path, port, folder, usrname, passwrd):
-    """Shows the partial message associated with the message-ID, MSG-ID."""
-    connection = imaplib.IMAP4_SSL(path, port)
-    connection.login(usrname, passwrd)
-    connection.select(folder)
-    resp, items = connection.search(None, 'HEADER', "Message-id", msg_id)
     
- 
+def header_info(msg_ids, accumulator):
+    """Gven a list of message-ids, prints the associated headers."""
+    headers = []
+    for id in msg_ids:
+        if id in accumulator.get_ids():
+            headers.append(accumulator.headers_map[id])
+    return headers
+            
+    
+    
+     
 def main():
     """Main function.  Prompts user for input."""
     
+    ####GET ALL MESSAGES FROM GMAIL###
     gmail_usr_name = raw_input("Enter the gmail user name: \n")
     gmail_passwrd = getpass.getpass("Enter the Gmail password: \n")
-    print("Please wait while message IDs are populated...")
+    print("Please wait while message IDs for Gmail are populated...")
     gmail_accumulator = Accumulator.Accumulator(GMAIL_PATH, gmail_usr_name, gmail_passwrd,
                                                 IMAP_PORT, "[Gmail]/All Mail")
     gmail_msg_ids = gmail_accumulator.get_ids()
     pprint.pprint(gmail_msg_ids)
+    
+    ####GET ALL MESSAGES FROM IMAP###
     IMAP2_usr_name = raw_input("Enter the IMAP2 user name: \n")
     IMAP2_passwrd = getpass.getpass("Enter the IMAP2 password: \n")
-    print("Please wait while message IDs are populated")
-    IMAP2_accumulator = Accumulator.Accumulator(IMAP2_PATH, IMAP2_usr_name, IMAP2_passwrd,
+    print("Please wait while message IDs for IMAP2 are populated")
+    
+    #path is temporarily imap.gmail.com for testing.
+    IMAP2_accumulator = Accumulator.Accumulator("imap.gmail.com", IMAP2_usr_name, IMAP2_passwrd,
                                                 IMAP_PORT, "[Gmail]/All Mail")
     IMAP2_msg_ids = IMAP2_accumulator.get_ids()
+    pprint.pprint(IMAP2_msg_ids)
     
+    ###FIND THE DIFFERENCES BETWEEN IMAP AND GMAIL.####
     compare_ids = Comparator.Comparator(gmail_msg_ids, IMAP2_msg_ids)
     diff_msgs = compare_ids.compare()
     
     print("Here is a list of the different message IDs:\n")
-    pprint(diff_msgs)
+    diff_msgs
     
+    print("Here is a list of the headers of each message ID which is not in Gmail:\n")
+    headers = header_info(diff_msgs, IMAP2_accumulator)
     
     ucb.interact()
     
