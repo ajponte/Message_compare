@@ -23,6 +23,7 @@ class Accumulator:
         self.msgs = []
         self.msg_ids = []
         self.msg_strings = []
+        self.headers_map = {}
         
     def get_ids(self):
         """Returns a list of message-IDs from THIS server and folder."""
@@ -57,15 +58,20 @@ class Accumulator:
     def get_header_info(self):
         """Returns a map from the message-IDs to the header of the message
            (The 'TO', 'FROM', and 'SUBJECT' fields)."""
-        headers_map = {}
+        hdrs_map = {}
         for msg in self.msg_strings:
             msg_id = msg.get("Message-ID")
             to = msg.get('To')
             frm = msg.get('From')
             subj = msg.get("Subject")
-            headers_map[msg_id] = [to, frm, subj]
-        return headers_map
-            
+            hdrs_map[msg_id] = [to, frm, subj]
+        self.headers_map = hdrs_map
+        return hdrs_map
+    
+    def headers_map(self):
+        """Returns the map between the Message-IDs and the Headers"""
+        return self.headers_map   
+    
     def print_msg_ids(self):
         """Prints all message-ID's in THIS."""
         pprint.pprint(self.msg_ids)
