@@ -39,11 +39,12 @@ IMAP_PORT = 993;
 IMAP2_PATH = "imap2.lbl.gov"
     
 def header_info(msg_ids, accumulator):
-    """Gven a list of message-ids, prints the associated headers."""
+    """Given a list of MESSAGE-IDs, prints the associated headers.
+       associated with the messages in the ACCUMULATOR."""
     headers = []
-    for id in msg_ids:
-        if id in accumulator.get_ids():
-            headers.append(accumulator.headers_map[id])
+    for ms_id in msg_ids:
+        if ms_id in accumulator.headers_map.keys():
+            headers.append(accumulator.headers_map[ms_id])
     return headers
             
     
@@ -74,13 +75,15 @@ def main():
     
     ###FIND THE DIFFERENCES BETWEEN IMAP AND GMAIL.####
     compare_ids = Comparator.Comparator(gmail_msg_ids, IMAP2_msg_ids)
-    diff_msgs = compare_ids.compare()
+    diff_ids = compare_ids.compare()
     
     print("Here is a list of the different message IDs:\n")
-    diff_msgs
+    pprint.pprint(diff_ids)
+    
+    print("There are {num} messages in IMAP2 which are not in Gmail".format(num = len(diff_ids)))
     
     print("Here is a list of the headers of each message ID which is not in Gmail:\n")
-    headers = header_info(diff_msgs, IMAP2_accumulator)
+    
     
     ucb.interact()
     
