@@ -12,6 +12,7 @@ import getpass
 import ucb #to be removed later.  For testing purposes only.
 import email
 import logging
+import prettytable
 
 '''
 Main entry point.  Given two paths to IMAP sources, compares the message IDs of 
@@ -96,10 +97,14 @@ def main():
     print("Here is a list of the headers of each message ID which is not in Gmail:\n")
     headers = header_info(diff_ids, gmail_accumulator)
     
-    #Not particularly elegant, but it works
-    print("Here is the header information of the missing messages:\n")
-    print('Seperated by "TO", "FROM", and "SUBJECT"\n')
-    print_table(headers)
+    #print a table of the info of the missing messages.
+    table = prettytable.PrettyTable(["TO", "FROM", "SUBJECT"])
+    table.align["TO"] = "l"
+    table.padding_width = 1
+    for hdr in headers:
+        table.add_row(hdr)
+    print(table)
+
     
     ucb.interact()
     
