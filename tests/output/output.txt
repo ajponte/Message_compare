@@ -1,0 +1,26 @@
+There are 10 messages in IMAP2/[Gmail]/sent-mail which are not in Gmail/Migrated/sent-mail 
+
+<26007328.1180689406138.JavaMail.root@ps24>
+<Pine.GSO.4.20.0405121006330.13345-101000@kirala.lbl.gov>
+<Pine.GSO.4.20.0405042325060.13345-100000@kirala.lbl.gov>
+<Pine.GSO.4.20.0404291059580.13345-100000@kirala.lbl.gov>
+<Pine.GSO.4.20.0404271205110.13345-200000@kirala.lbl.gov>
+<Pine.GSO.4.20.0402182327080.19891-101000@kirala.lbl.gov>
+<Pine.GSO.4.20.0402170838290.19891-100000@kirala.lbl.gov>
+<Pine.GSO.4.20.0402161713280.19891-101000@kirala.lbl.gov>
+<Pine.GSO.4.20.0402161709590.19891-101000@kirala.lbl.gov>
+<Pine.GSO.4.20.0310161148370.23344-100000@kirala.lbl.gov>
+----------------------------------+---------------------------------------------+-----------------------------------------------+----------------------------------------------------------------+
+| TO                                          |                      FROM                     |                            SUBJECT                             |
++---------------------------------------------+-----------------------------------------------+----------------------------------------------------------------+
+| saul@lbl.gov                                | "jonka1@tiscali.co.uk" <jonka1@tiscali.co.uk> |                  Ideas inspired by your work                   |
+| Saul Perlmutter <saul@lbl.gov>              |         Saul Perlmutter <saul@lbl.gov>        |              Greg's recent APS talk (Powerpoint)               |
+| Saul Perlmutter <saul@lbl.gov>              |         Saul Perlmutter <saul@lbl.gov>        |                              Xvnc                              |
+| Michael Levi <melevi@LBL.gov>               |         Saul Perlmutter <saul@lbl.gov>        |                 Omnibus Paper Authorship (fwd)                 |
+| Daniel Perlmutter <perlmutt@seas.upenn.edu> |         Saul Perlmutter <saul@lbl.gov>        |                   Course outline (from 1998)                   |
+| Saul Perlmutter <saul@lbl.gov>              |         Saul Perlmutter <saul@lbl.gov>        |           Albinoni and grey dust residual .eps plot            |
+| scpexec@lbl.gov                             |         Saul Perlmutter <saul@lbl.gov>        |           Today's  exec phone meeting:  510-486-7555           |
+| mturner@nsf.gov                             |         Saul Perlmutter <saul@lbl.gov>        |                   slides you requested (fwd)                   |
+| Saul Perlmutter <saul@lbl.gov>              |         Saul Perlmutter <saul@lbl.gov>        | Lego plot of Supernova Search context (orig. for Kathy Turner) |
+| Jeanne Miller <jmmiller@lbl.gov>            |         Saul Perlmutter <saul@lbl.gov>        |                        Lifan Wang (fwd)                        |
++---------------------------------------------+-----------------------------------------------+----------------------------------------------------------------+
