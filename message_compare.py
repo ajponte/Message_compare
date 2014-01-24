@@ -36,8 +36,8 @@ IMAP2_PATH = "imap2.lbl.gov"
 '''The default file which all output will be sent to.'''
 OUTPUT_FILE = "output.txt"
 
-'''The default line seperator for output.'''
-LINE_SEPERATOR = "----------------------------------"
+'''The default line separator for output.'''
+LINE_SEPARATOR = "----------------------------------"
 
 def header_info(msg_ids, accumulator):
     """Given a list of MESSAGE-IDs, prints the associated headers.
@@ -110,12 +110,13 @@ def main():
     ###write the output to OUTPUT_FILE.###
 
     output_file = open(OUTPUT_FILE, 'w')
-    output_file.write("There are {num} messages in IMAP2/{fldr1} which are not in Gmail/{fldr2}\n".format(num = len(diff_ids),
+    output_file.write("There are {num} messages in IMAP2/{fldr1} which are not in Gmail/{fldr2} \n".format(num = len(diff_ids),
                                                                                             fldr1 = IMAP2_accumulator.folder,
                                                                                            fldr2 = gmail_accumulator.folder))
+    output_file.write("\n")
     for ids in diff_ids:
         output_file.write(str(ids) + "\n")
-    output_file.write(LINE_SEPERATOR)
+    output_file.write(LINE_SEPARATOR)
     output_file.write(str(table)) 
     output_file.close()
     
