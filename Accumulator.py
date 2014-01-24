@@ -8,11 +8,13 @@ import imaplib
 import pprint
 import email
 import ucb
+import sys
+import collections
 
 class Accumulator:
-    """A new Accumalor which will gather message-IDs from the folder FLDR
+    """A new Accumulator which will gather message-IDs from the folder FLDR
        on the server SVR.  Login credentials to be provided from the 
-      the user name USR and passord PASSWD, using the IMAP port number PORT."""
+      the user name USR and password PASSWD, using the IMAP port number PORT."""
     def __init__(self, servr, usr, passwd, port, fldr):
         self.server = servr
         self.user_name = usr
@@ -28,23 +30,27 @@ class Accumulator:
     def get_ids(self):
         """Returns a list of message-IDs from THIS server and folder.
            Adds the message-IDs to MSG_IDS and HEADERS_MAP."""
-        connection = imaplib.IMAP4_SSL(self.server, self.port_num)
-        connection.login(self.user_name, self.password)
-        connection.select(self.folder)
-        response, data = connection.uid('FETCH', '1:*', '(RFC822.HEADER)')
-        messages = [data[i][1].strip() + "\r\nSize:" + data[i][0].split()[4]
-                + "\r\nUID:" + data[i][0].split()[2]
-                for i in xrange(0, len(data), 2)]
-        for msg in messages:
-            msg_str = email.message_from_string(msg)
-            self.msg_strings.append(msg_str)
-            message_id = msg_str.get('Message-ID')
-            to = msg_str.get("To");
-            frm = msg_str.get("From")
-            subj = msg_str.get("Subject")
-            self.add_to_headers_map(message_id, [to, frm, subj])
-            self.msg_ids.append(message_id)
-        self.msgs = messages
+        try:
+            connection = imaplib.IMAP4_SSL(self.server, self.port_num)
+            connection.login(self.user_name, self.password)
+            connection.select(self.folder)
+            response, data = connection.uid('FETCH', '1:*', '(RFC822.HEADER)')
+            messages = [data[i][1].strip() + "\r\nSize:" + data[i][0].split()[4]
+                        + "\r\nUID:" + data[i][0].split()[2]
+                        for i in xrange(0, len(data), 2)]
+            for msg in messages:
+                msg_str = email.message_from_string(msg)
+                self.msg_strings.append(msg_str)
+                message_id = msg_str.get('Message-ID')
+                to = msg_str.get("To");
+                frm = msg_str.get("From")
+                subj = msg_str.get("Subject")
+                self.add_to_headers_map(message_id, [to, frm, subj])
+                self.msg_ids.append(message_id)
+                self.msgs = messages
+        except:
+            print("Error Making the connection to {conn}".format(conn = self.server))
+            sys.exit(1)
         return self.msg_ids
     
     def add_to_headers_map(self, message_id, fields):
@@ -60,6 +66,10 @@ class Accumulator:
     def get_msgs(self):
         """Returns a list of the unformatted messages in THIS."""
         return self.msgs
+    
+    def msg_ids(self):
+        """ Returns the list of Message-IDs in THIS."""
+        return self.msg_ids
     
     def get_msg_strings(self):
         """Returns a list of the message email objects."""
@@ -77,12 +87,27 @@ class Accumulator:
             hdrs_map[msg_id] = [to, frm, subj]
         self.headers_map = hdrs_map
         return hdrs_map
-    
+
     def headers_map(self):
         """Returns the map between the Message-IDs and the Headers"""
         return self.headers_map   
+    def get_folder(self):
+        """Returns THIS folder."""
+        return self.folder
     
     def print_msg_ids(self):
         """Prints all message-ID's in THIS."""
         pprint.pprint(self.msg_ids)
+
+    def unique_ids(self):
+        """Returns True iff every Message-ID in THIS is unique."""
+        return len(self.msg_ids) == len(set(self.msg_ids))
+
+    def get_duplicate_ids(self):
+        """ Returns duplicate Message-IDs (if any)."""
+        return [msg_id for msg_id, count in collections.Counter(self.msg_ids).items() if count > 1]
+            
+
+        
+            
 
