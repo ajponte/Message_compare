@@ -3,7 +3,6 @@ import Comparator
 import Accumulator
 import os
 import sys
-import getopt
 import pprint
 import getpass
 from Message_Compare import ucb
