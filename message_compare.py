@@ -1,17 +1,12 @@
 from __future__ import print_function
-from email.parser import Parser
 import Comparator
 import Accumulator
 import os
 import sys
-import re
-import imaplib
 import getopt
 import pprint
 import getpass
-import ucb #to be removed later.  For testing purposes only.
-import email
-import logging
+from Message_Compare import ucb
 import prettytable #https://code.google.com/p/prettytable/
 
 '''
@@ -38,7 +33,13 @@ IMAP_PORT = 993;
 
 '''The path to IMAP2.'''
 IMAP2_PATH = "imap2.lbl.gov"
-    
+
+'''The default file which all output will be sent to.'''
+OUTPUT_FILE = "output.txt"
+
+'''The default line seperator for output.'''
+LINE_SEPERATOR = "----------------------------------"
+
 def header_info(msg_ids, accumulator):
     """Given a list of MESSAGE-IDs, prints the associated headers.
        associated with the messages in the ACCUMULATOR."""
@@ -60,7 +61,9 @@ def print_table(lst):
 def main():
     """Main function.  Prompts user for input.  Outputs the Message-ID
        of each message in both the source and destination.  Outputs the 
-       number of messages which are different between source and destination."""
+       number of messages which are different between source and destination.
+       Sends a formatted table with the header content of the missing messages
+       to OUTPUT_FILE."""
     
     ####GET ALL MESSAGES FROM GMAIL###
     gmail_usr_name = raw_input("Enter the gmail user name: \n")
@@ -74,7 +77,7 @@ def main():
     ####GET ALL MESSAGES FROM IMAP###
     IMAP2_usr_name = raw_input("Enter the IMAP2 user name: \n")
     IMAP2_passwrd = getpass.getpass("Enter the IMAP2 password: \n")
-    print("Please wait while message IDs for the SOURCE are populated")
+    print("Please wait while message IDs for IMAP are populated")
     
     #path is temporarily imap.gmail.com for testing.
     IMAP2_accumulator = Accumulator.Accumulator("imap.gmail.com", IMAP2_usr_name, IMAP2_passwrd,
@@ -88,7 +91,7 @@ def main():
 
     
     print("-------------------------------------------------------------------------------------")
-    print("There are {num} messages in IMAP2/{fldr1} which are not in Gmail/{fldr2}".format(num = len(diff_ids),
+    print("There are {num} messages in IMAP2/{fldr1} which are not in Gmail/{fldr2}\n".format(num = len(diff_ids),
                                                                                             fldr1 = IMAP2_accumulator.folder,
                                                                                             fldr2 = gmail_accumulator.folder))
     print("--------------------------------------------------------------------------------------")
@@ -97,14 +100,25 @@ def main():
     print("Here is a list of the headers of each message ID which is not in Gmail:\n")
     headers = header_info(diff_ids, gmail_accumulator)
     
-    #print a table of the info of the missing messages.
+    ###print a table of the info of the missing messages.###
     table = prettytable.PrettyTable(["TO", "FROM", "SUBJECT"])
     table.align["TO"] = "l"
     table.padding_width = 1
     for hdr in headers:
         table.add_row(hdr)
     print(table)
+    
+    ###write the output to OUTPUT_FILE.###
 
+    output_file = open(OUTPUT_FILE, 'w')
+    output_file.write("There are {num} messages in IMAP2/{fldr1} which are not in Gmail/{fldr2}\n".format(num = len(diff_ids),
+                                                                                            fldr1 = IMAP2_accumulator.folder,
+                                                                                           fldr2 = gmail_accumulator.folder))
+    for ids in diff_ids:
+        output_file.write(str(ids) + "\n")
+    output_file.write(LINE_SEPERATOR)
+    output_file.write(str(table)) 
+    output_file.close()
     
     ucb.interact()
     
