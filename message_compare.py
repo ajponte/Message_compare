@@ -5,7 +5,7 @@ import os
 import sys
 import pprint
 import getpass
-from Message_Compare import ucb
+import ucb
 import prettytable #https://code.google.com/p/prettytable/
 
 '''
@@ -34,7 +34,7 @@ IMAP_PORT = 993;
 IMAP2_PATH = "imap2.lbl.gov"
 
 '''The default file which all output will be sent to.'''
-OUTPUT_FILE = "output.txt"
+OUTPUT_FILE = "output3.txt"
 
 '''The default line separator for output.'''
 LINE_SEPARATOR = "----------------------------------"
@@ -69,7 +69,7 @@ def main():
     gmail_passwrd = getpass.getpass("Enter the Gmail password: \n")
     print("Please wait while message IDs for Gmail are populated...")
     gmail_accumulator = Accumulator.Accumulator(GMAIL_PATH, gmail_usr_name, gmail_passwrd,
-                                                IMAP_PORT, "Migrated/sent-mail")
+                                                IMAP_PORT, "dzMail2002a")
     gmail_msg_ids = gmail_accumulator.get_ids()
     pprint.pprint(gmail_msg_ids)
     
@@ -78,16 +78,17 @@ def main():
     IMAP2_passwrd = getpass.getpass("Enter the IMAP2 password: \n")
     print("Please wait while message IDs for IMAP are populated")
     
-    #path is temporarily imap.gmail.com for testing.
-    IMAP2_accumulator = Accumulator.Accumulator("imap.gmail.com", IMAP2_usr_name, IMAP2_passwrd,
-                                                IMAP_PORT, "[Gmail]/sent-mail")
+    IMAP2_accumulator = Accumulator.Accumulator("imap2.lbl.gov", IMAP2_usr_name, IMAP2_passwrd,
+                                                IMAP_PORT, "dzMail2002a")
     IMAP2_msg_ids = IMAP2_accumulator.get_ids()
     pprint.pprint(IMAP2_msg_ids)
     
     ###FIND THE DIFFERENCES BETWEEN IMAP AND GMAIL.####
-    compare_ids = Comparator.Comparator(gmail_msg_ids, IMAP2_msg_ids)
+    compare_ids = Comparator.Comparator(IMAP2_msg_ids, gmail_msg_ids)
     diff_ids = compare_ids.compare()
 
+    print("{num_msgs} messages in IMAP2/{fldr}\n".format(num_msgs = IMAP2_accumulator.count_ids(), fldr = IMAP2_accumulator.folder))
+    print("{num_msgs} messages in GMAIL/{fldr}\n".format(num_msgs = gmail_accumulator.count_ids(), fldr = gmail_accumulator.folder))
     
     print("-------------------------------------------------------------------------------------")
     print("There are {num} messages in IMAP2/{fldr1} which are not in Gmail/{fldr2}\n".format(num = len(diff_ids),
@@ -97,7 +98,7 @@ def main():
     pprint.pprint(diff_ids)
     
     print("Here is a list of the headers of each message ID which is not in Gmail:\n")
-    headers = header_info(diff_ids, gmail_accumulator)
+    headers = header_info(diff_ids, IMAP2_accumulator)
     
     ###print a table of the info of the missing messages.###
     table = prettytable.PrettyTable(["TO", "FROM", "SUBJECT"])
@@ -110,6 +111,9 @@ def main():
     ###write the output to OUTPUT_FILE.###
 
     output_file = open(OUTPUT_FILE, 'w')
+    output_file.write("\n")
+    output_file.write("{num_msgs} messages in IMAP2/{fldr}\n".format(num_msgs = IMAP2_accumulator.count_ids(), fldr = IMAP2_accumulator.folder))
+    output_file.write("{num_msgs} messages in GMAIL/{fldr}\n".format(num_msgs = gmail_accumulator.count_ids(), fldr = gmail_accumulator.folder))
     output_file.write("There are {num} messages in IMAP2/{fldr1} which are not in Gmail/{fldr2} \n".format(num = len(diff_ids),
                                                                                             fldr1 = IMAP2_accumulator.folder,
                                                                                            fldr2 = gmail_accumulator.folder))
