@@ -12,7 +12,7 @@ import getpass
 import ucb #to be removed later.  For testing purposes only.
 import email
 import logging
-import prettytable
+import prettytable #https://code.google.com/p/prettytable/
 
 '''
 Main entry point.  Given two paths to IMAP sources, compares the message IDs of 
