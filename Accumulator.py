@@ -103,6 +103,11 @@ class Accumulator:
         """Returns True iff every Message-ID in THIS is unique."""
         return len(self.msg_ids) == len(set(self.msg_ids))
 
+    def count_dups(self):
+        """Returns a dictionary of each message ID and how many duplicates 
+           there are of the Message-ID."""
+        return collections.Counter(self.msg_ids)
+
     def get_duplicate_ids(self):
         """ Returns duplicate Message-IDs (if any)."""
         return [msg_id for msg_id, count in collections.Counter(self.msg_ids).items() if count > 1]
