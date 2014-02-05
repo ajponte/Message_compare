@@ -1,3 +1,4 @@
+
 from __future__ import print_function
 import Comparator
 import Accumulator
@@ -68,7 +69,7 @@ def main():
    # gmail_usr_name = raw_input("Enter the gmail user name: \n")
    # gmail_passwrd = getpass.getpass("Enter the Gmail password: \n")
     print("Please wait while message IDs for Gmail are populated...")
-    gmail_accumulator = Accumulator.Accumulator(GMAIL_PATH, "usr_name", "pass",
+    gmail_accumulator = Accumulator.Accumulator(GMAIL_PATH, "s_perlmutter@lbl.gov", "Andthisfor0114#",
                                                 IMAP_PORT, GMAIL_FOLDER)
     gmail_msg_ids = gmail_accumulator.get_ids()
     pprint.pprint(gmail_msg_ids)
@@ -78,7 +79,7 @@ def main():
     #IMAP2_passwrd = getpass.getpass("Enter the IMAP2 password: \n")
     print("Please wait while message IDs for IMAP are populated")
     
-    IMAP2_accumulator = Accumulator.Accumulator("imap2.lbl.gov", "usr-name", "pass,
+    IMAP2_accumulator = Accumulator.Accumulator("imap2.lbl.gov", "s_perlmutter@lbl.gov", "Andthisfor0114#",
                                                 IMAP_PORT, IMAP2_FOLDER)
     IMAP2_msg_ids = IMAP2_accumulator.get_ids()
     pprint.pprint(IMAP2_msg_ids)
