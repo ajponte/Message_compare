@@ -1,3 +1,4 @@
+
 from __future__ import print_function
 import Comparator
 import Accumulator
@@ -35,13 +36,13 @@ IMAP_PORT = 993;
 IMAP2_PATH = "imap2.lbl.gov"
 
 '''The default file which all output will be sent to.'''
-OUTPUT_FILE = "output/fwMail2000d.txt"
+OUTPUT_FILE = "output/azzMail2005abc.txt"
 
 '''The default IMAP2 folder to grab Message-IDs from.'''
-IMAP2_FOLDER = "fwMail2000d"
+IMAP2_FOLDER = "azzMail2005abc"
 
 '''The default Gmail folder to grab Message-IDs from.'''
-GMAIL_FOLDER = "fwMail2000d"
+GMAIL_FOLDER = "azzMail2005abc"
 
 '''The default line separator for output.'''
 LINE_SEPARATOR = "--------------------------------\n"
@@ -68,7 +69,7 @@ def main():
    # gmail_usr_name = raw_input("Enter the gmail user name: \n")
    # gmail_passwrd = getpass.getpass("Enter the Gmail password: \n")
     print("Please wait while message IDs for Gmail are populated...")
-    gmail_accumulator = Accumulator.Accumulator(GMAIL_PATH, "usr_name", "passwrd#",
+    gmail_accumulator = Accumulator.Accumulator(GMAIL_PATH, "usr_name, "passwrd",
                                                 IMAP_PORT, GMAIL_FOLDER)
     gmail_msg_ids = gmail_accumulator.get_ids()
     pprint.pprint(gmail_msg_ids)
@@ -123,6 +124,11 @@ def main():
     output_file.write("There are {num} messages in IMAP2/{fldr1} which are not in Gmail/{fldr2} \n".format(num = len(diff_ids),
                                                                                             fldr1 = IMAP2_accumulator.folder,
                                                                                            fldr2 = gmail_accumulator.folder))
+    output_file.write("Here is a list of the headers of each message ID which is not in Gmail:\n")
+    for ids in diff_ids:
+        output_file.write(str(ids))
+        output_file.write("\n")
+    output_file.write("\n")
 
     ###OUUTPUT THE TABLE###
 
