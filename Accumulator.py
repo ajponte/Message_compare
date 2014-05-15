@@ -9,7 +9,7 @@ import pprint
 import email
 import sys
 import collections
-import Connector
+
 
 class Accumulator:
     """A new Accumulator which will gather message-IDs from the folder FLDR
