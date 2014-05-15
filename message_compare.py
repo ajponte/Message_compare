@@ -69,7 +69,7 @@ def main():
    # gmail_usr_name = raw_input("Enter the gmail user name: \n")
    # gmail_passwrd = getpass.getpass("Enter the Gmail password: \n")
     print("Please wait while message IDs for Gmail are populated...")
-    gmail_accumulator = Accumulator.Accumulator(GMAIL_PATH, "usr_name, "passwrd",
+    gmail_accumulator = Accumulator.Accumulator(GMAIL_PATH, "usr_name", "passwrd",
                                                 IMAP_PORT, GMAIL_FOLDER)
     gmail_msg_ids = gmail_accumulator.get_ids()
     pprint.pprint(gmail_msg_ids)
